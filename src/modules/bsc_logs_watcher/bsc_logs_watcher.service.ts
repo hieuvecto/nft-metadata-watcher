@@ -14,15 +14,20 @@ import {
   EthereumAccountsService,
 } from 'src/common/ethereum_accounts/ethereum_accounts.service';
 import {
-  getOpenBoxContractAddress,
-  getOpenBoxEventTopics,
-} from 'src/common/contracts/OpenBoxContract';
-import {
   getRandomizeByRarityContractAddress,
   requestRandomNumber,
   REQUEST_RANDOM_NUMBER_GAS_LIMIT,
 } from 'src/common/contracts/RandomizeByRarityContract';
 import BigNumber from 'bignumber.js';
+import {
+  getOpenBoxTypeEventTopics,
+  getWidiContractAddress,
+} from 'src/common/contracts/WidiContract';
+import notifier from 'node-notifier';
+import {
+  getOpenBoxContractAddress,
+  getOpenBoxEventTopics,
+} from 'src/common/contracts/OpenBoxContract';
 
 const MAXIMUM_SCANNING_BLOCKS = 40;
 
@@ -43,7 +48,7 @@ export class BscLogsWatcherService {
   async getAllLogs() {
     try {
       // BAD CODE
-      await this.ethereumAccountsService.initNonce(this.polygonWeb3Service);
+      // await this.ethereumAccountsService.initNonce(this.polygonWeb3Service);
 
       let startBlock;
       const startBlockStr = this.configService.get('bsc.scanStartBlock');
@@ -87,14 +92,13 @@ export class BscLogsWatcherService {
 
     const networkId = this.configService.get('bsc.networkId');
 
-    //watch NftAuctionContract logs
-    const watchOpenBoxContractLogsResult = this.watchOpenBoxContractLogs(
+    const watchWidiLogsReseult = this.watchWidiLogs(
       fromBlock,
       toBlock,
       networkId,
     );
 
-    await Promise.all([watchOpenBoxContractLogsResult]);
+    await Promise.all([watchWidiLogsReseult]);
 
     return this.getLogs(toBlock + 1);
   }
@@ -201,6 +205,55 @@ export class BscLogsWatcherService {
       return true;
     } catch (e) {
       this.logger.error(`handleOpenBoxLogData error: ${e}`);
+    }
+  }
+
+  private async watchWidiLogs(
+    fromBlock: number,
+    toBlock: number,
+    networkId: string,
+  ) {
+    // contract logs
+    const logs = await this.bscWeb3Service.getPastLogs({
+      fromBlock,
+      toBlock,
+      address: getWidiContractAddress(networkId),
+    });
+    this.logger.log(`scanned Widi contract logs: ${JSON.stringify(logs)}`);
+
+    const openBoxTopics = getOpenBoxTypeEventTopics(networkId);
+    const openBoxLogs = logs.filter(({ topics }) =>
+      openBoxTopics.includes(topics[0]),
+    );
+    this.logger.log(
+      `scanned OpenBox event logs: ${JSON.stringify(openBoxLogs)}`,
+    );
+
+    await Promise.map(
+      openBoxLogs,
+      ({ transactionHash }) => {
+        return {
+          transactionHash,
+        };
+      },
+      { concurrency: 3 },
+    ).map(this.handleWidiOpenBox.bind(this));
+  }
+
+  private async handleWidiOpenBox({
+    transactionHash,
+  }: {
+    transactionHash: string;
+  }): Promise<boolean> {
+    try {
+      notifier.notify({
+        title: 'Box opened.',
+        message: `Transaction hash: ${transactionHash}`,
+      });
+
+      return true;
+    } catch (e) {
+      this.logger.error(`handleWidiOpenBox error: ${e}`);
     }
   }
 }

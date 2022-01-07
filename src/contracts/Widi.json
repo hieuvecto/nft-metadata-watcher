@@ -1,0 +1,34 @@
+{
+  "networks": {
+    "56": {
+      "events": {
+        "0x4590c73268992ae5dce7fc78031ca39277593d7b561e42e237ea4cf33f8cb455": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "poolId",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "itemId",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "result",
+              "type": "uint256"
+            }
+          ],
+          "name": "OpenBoxType",
+          "type": "event"
+        }
+      },
+      "address": "0xbd86ad4fa531434d488f61858010697fcb65b1a4"
+    }
+  }
+}

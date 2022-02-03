@@ -2,7 +2,7 @@
   "networks": {
     "56": {
       "events": {
-        "0x4590c73268992ae5dce7fc78031ca39277593d7b561e42e237ea4cf33f8cb455": {
+        "0x3deeffca3c86a528758b0ff95b46b531e03be332bf88cb7e2c7b0b8daa608c31": {
           "anonymous": false,
           "inputs": [
             {
@@ -28,7 +28,7 @@
           "type": "event"
         }
       },
-      "address": "0xbd86ad4fa531434d488f61858010697fcb65b1a4"
+      "address": "0x94595b3b94b2df23feb9557a2ac295267877e646"
     }
   }
 }

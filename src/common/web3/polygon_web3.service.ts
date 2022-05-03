@@ -28,4 +28,8 @@ export class PolygonWeb3Service extends Web3Service {
       });
     }
   }
+
+  getWeb3(): Web3 {
+    return this.web3;
+  }
 }

@@ -100,4 +100,6 @@ export abstract class Web3Service implements IWeb3Service {
       return this.getPastLogs(params);
     }
   }
+
+  abstract getWeb3(): Web3;
 }

@@ -14,7 +14,7 @@ export class BscWeb3Service extends Web3Service {
   constructor(protected readonly configService: ConfigService) {
     super();
     // TODO: consider aws web3 provider for signature v4
-    this.web3 = new Web3(configService.get('bsc.url'));
+    this.web3 = new Web3(new Web3.providers.HttpProvider(configService.get('bsc.url')));
 
     const networkId = parseInt(configService.get('bsc.networkId'), 10);
     const chainId = parseInt(configService.get('bsc.chainId'), 10);
@@ -27,5 +27,9 @@ export class BscWeb3Service extends Web3Service {
         chainId,
       });
     }
+  }
+
+  getWeb3(): Web3 {
+    return this.web3;
   }
 }

@@ -1,5 +1,6 @@
 import { TxData } from '@ethereumjs/tx';
 import { BigNumber } from 'bignumber.js';
+import Web3 from 'web3';
 import { Log, PastLogsOptions } from 'web3-core';
 import { BlockTransactionString } from 'web3-eth';
 
@@ -31,4 +32,6 @@ export interface IWeb3Service {
     callObject: { to: string; data: string },
     defaultBlock: number | string,
   ): Promise<string>;
+
+  getWeb3(): Web3;
 }

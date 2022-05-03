@@ -1,4 +1,10 @@
 # nft-metadata-watcher
+Contract char:
+0x5fdcf857957e9db2b58be6c5f499a2bc8d64f24c
+
+Contract land:
+0x94595B3B94B2df23fEb9557A2AC295267877e646
+
 
 ![Rada Auction flow image](https://crustwebsites.net/ipfs/QmYWz9rMnYciiTHK719n8FFgMLVPEsmjPYa6DUu9RY9sHT?filename=rada-acution-flow.jpg)
 ![OpenBox Flow image](https://crustwebsites.net/ipfs/QmSM9ZHvHrnNNJLxJ13QDNh44GNehNB6FsEqKDpj5muY3x?filename=openbox-flow.jpg)
